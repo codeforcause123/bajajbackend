@@ -15,40 +15,50 @@ app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
-app.get("/bfhl", (req, res) => {
-  res.json({ operation_code: 1 });
-});
-app.post("/bfhl", (req, res) => {
-  try {
-    const array = req.body.data;
-    const numbers = [];
-    const alphabets = [];
-
-    array.forEach((element) => {
-      if (typeof element === "number") {
-        numbers.push(element);
-      } else if (typeof element === "string") {
-        alphabets.push(element);
-      }
-    });
-
-    res.json({
-      is_success: true,
+app.use((error, req, res, next) => {
+  const numbers = [];
+  const alphabets = [];
+  if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
+    res.status(400).json({
+      is_success: false,
       user_id: "aayush_raj_13072002",
       email: "ar4192@srmist.edu.in",
       roll_number: "RA2011027010171",
       numbers,
       alphabets,
     });
-  } catch (error) {
-    res.status(500).json({
-      is_success: false,
-      user_id: "aayush_raj_13072002",
-      email: "ar4192@srmist.edu.in",
-      roll_number: "RA2011027010171",
-    });
+  } else {
+    next();
   }
 });
+
+app.get("/bfhl", (req, res) => {
+  res.json({ operation_code: 1 });
+});
+
+app.post("/bfhl", async (req, res) => {
+  let jsonData = req.body.data;
+  const numbers = [];
+  const alphabets = [];
+
+  jsonData.forEach((element) => {
+    if (typeof element === "number") {
+      numbers.push(element);
+    } else if (typeof element === "string") {
+      alphabets.push(element);
+    }
+  });
+
+  res.json({
+    is_success: true,
+    user_id: "aayush_raj_13072002",
+    email: "ar4192@srmist.edu.in",
+    roll_number: "RA2011027010171",
+    numbers,
+    alphabets,
+  });
+});
+
 app.listen(process.env.PORT, () => {
   console.log("Server Up and Running");
 });
