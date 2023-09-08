@@ -3,8 +3,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
@@ -15,9 +17,16 @@ app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
+function findHighestAlphabet(alphabets) {
+  if (!alphabets || alphabets.length === 0) {
+    return [];
+  }
+  return [alphabets.reduce((a, b) => (a > b ? a : b))];
+}
 app.use((error, req, res, next) => {
   const numbers = [];
   const alphabets = [];
+  const highest_alphabet = [];
   if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
     res.status(400).json({
       is_success: false,
@@ -26,6 +35,7 @@ app.use((error, req, res, next) => {
       roll_number: "RA2011027010171",
       numbers,
       alphabets,
+      highest_alphabet,
     });
   } else {
     next();
@@ -48,6 +58,7 @@ app.post("/bfhl", async (req, res) => {
       alphabets.push(element);
     }
   });
+  const highest_alphabet = findHighestAlphabet(alphabets);
 
   res.json({
     is_success: true,
@@ -56,6 +67,7 @@ app.post("/bfhl", async (req, res) => {
     roll_number: "RA2011027010171",
     numbers,
     alphabets,
+    highest_alphabet,
   });
 });
 
