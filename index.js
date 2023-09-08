@@ -30,7 +30,7 @@ app.use((error, req, res, next) => {
   if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
     res.status(400).json({
       is_success: false,
-      user_id: "aayush_raj_13072002",
+      user_id: "Aayush_Raj_13072002",
       email: "ar4192@srmist.edu.in",
       roll_number: "RA2011027010171",
       numbers,
@@ -62,7 +62,7 @@ app.post("/bfhl", async (req, res) => {
 
   res.json({
     is_success: true,
-    user_id: "aayush_raj_13072002",
+    user_id: "Aayush_Raj_13072002",
     email: "ar4192@srmist.edu.in",
     roll_number: "RA2011027010171",
     numbers,
