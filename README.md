@@ -1,4 +1,4 @@
-# BajajBackend
+# Bajaj Finserv | Backend Qualifier | SRM University
 
 [Backend Link](https://bajajbackend.vercel.app/bfhl)
 
